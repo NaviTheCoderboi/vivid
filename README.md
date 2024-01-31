@@ -1,10 +1,14 @@
 # Vivid
 
 <p align="center">
-    A toy web framework made by me for learning purpose.
+    <img width="120" src="./assets/vivid-logo.png" alt="Library Logo">
 </p>
 
-![PyPI - Version](https://img.shields.io/pypi/v/vivid)
+<p align="center">
+    <strong>Vivid</strong> &rightarrow; A toy web framework made by me for learning purpose.<br><br>
+    <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg">
+</p>
+
 
 
 ## Installation
