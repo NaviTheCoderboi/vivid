@@ -4,11 +4,12 @@ import typing as t
 import uvicorn
 from importlib import util
 import jinja2
-from vivid.utils.common import send_response
+from vivid.utils.common import send_response, check_if_accepts_arg
 import mimetypes
 from types import ModuleType
 
 __all__: tuple[str, ...] = ("Http",)
+
 
 def load_mod(path: Path) -> ModuleType | None:
     """
@@ -32,10 +33,11 @@ def load_mod(path: Path) -> ModuleType | None:
     else:
         return None
 
+
 class Http:
     """
     Http class to create a vivid app
-    
+
     Arguments
     ---------
     pages: dict[str, Path]
@@ -48,7 +50,7 @@ class Http:
         Dictionary of routes and their corresponding scripts
     styles: dict[str, Path]
         Dictionary of routes and their corresponding styles
-    
+
     Attributes
     ----------
     pages: dict[str, Path]
@@ -62,7 +64,15 @@ class Http:
     styles: dict[str, Path]
         Dictionary of routes and their corresponding styles
     """
-    def __init__(self, pages: dict[str, Path], server: dict[str, Path], static: dict[str, Path], scripts: dict[str, Path], styles: dict[str, Path]) -> None:
+
+    def __init__(
+        self,
+        pages: dict[str, Path],
+        server: dict[str, Path],
+        static: dict[str, Path],
+        scripts: dict[str, Path],
+        styles: dict[str, Path],
+    ) -> None:
         self.pages = pages
         self.server = server
         self.static = static
@@ -81,7 +91,7 @@ class Http:
             The receive function
         send: collections.abc.Callable
             The send function
-        
+
         Returns
         -------
         None
@@ -90,46 +100,65 @@ class Http:
         ------
         Exception
             If an error occurs
-        
+
         Notes
         -----
         This function is called by uvicorn
         """
-        assert scope['type'] == 'http'
-        route: str = scope['path']
+        assert scope["type"] == "http"
+        route: str = scope["path"]
         try:
             if route.startswith("/static"):
                 body = self.serve_static(route)
                 if body:
-                    await send_response(200, body[0], [[b'content-type', body[1].encode() if body else b"text/html"]], send)
+                    await send_response(
+                        200,
+                        body[0],
+                        [[b"content-type", body[1].encode() if body else b"text/html"]],
+                        send,
+                    )
                 else:
                     await self.render_not_found(send)
             elif route == "/favicon.ico":
                 favicon = self.serve_static("/static/favicon.ico")
                 if favicon:
-                    await send_response(200, favicon[0], [[b'content-type', favicon[1].encode() if favicon else b"text/html"]], send)
+                    await send_response(
+                        200,
+                        favicon[0],
+                        [
+                            [
+                                b"content-type",
+                                favicon[1].encode() if favicon else b"text/html",
+                            ]
+                        ],
+                        send,
+                    )
                 else:
                     await self.render_not_found(send)
             elif route.startswith("/scripts"):
                 body = await self.serve_script(route)
                 if body:
-                    await send_response(200, body, [[b'content-type', b'text/javascript']], send)
+                    await send_response(
+                        200, body, [[b"content-type", b"text/javascript"]], send
+                    )
                 else:
                     await self.render_not_found(send)
             elif route.startswith("/styles"):
                 body = await self.serve_styles(route)
                 if body:
-                    await send_response(200, body, [[b'content-type', b'text/css']], send)
+                    await send_response(
+                        200, body, [[b"content-type", b"text/css"]], send
+                    )
                 else:
                     await self.render_not_found(send)
             else:
                 body = self.return_template(self.pages[route])
                 status = 200
-                headers = [ [b'content-type', b'text/html']]
+                headers = [[b"content-type", b"text/html"]]
                 if self.server.get(route):
                     mod = await self.load_server(self.server[route])
                     if mod:
-                        data = await self.get_load_data(mod)
+                        data = await self.get_load_data(mod, await receive())
                         if data and body:
                             body = self.render_template(body, data.body)
                             if isinstance(body, Exception):
@@ -159,6 +188,7 @@ class Http:
 
         Returns
         -------
+        None
         """
         config = uvicorn.Config(self, host="localhost", port=8000, reload=True)
         server = uvicorn.Server(config)
@@ -183,7 +213,7 @@ class Http:
                 return file.read()
         except FileNotFoundError:
             return None
-    
+
     async def load_server(self, page: Path) -> ModuleType | None:
         """
         Load the server file
@@ -192,7 +222,7 @@ class Http:
         ---------
         page: Path
             The path to the server file
-        
+
         Returns
         -------
         ModuleType | None
@@ -203,8 +233,10 @@ class Http:
             return mod
         else:
             return None
-        
-    async def get_load_data(self, mod: ModuleType) -> t.Any | None:
+
+    async def get_load_data(
+        self, mod: ModuleType, receive: dict[str, t.Any]
+    ) -> t.Any | None:
         """
         Get the data from the load function
 
@@ -212,20 +244,26 @@ class Http:
         ---------
         mod: ModuleType
             The loaded module
-        
+
         Returns
         -------
         typing.Any
             The data from the load function
         """
         if hasattr(mod, "load"):
-            try:
-                return await mod.load()
-            except TypeError:
-                return mod.load()
+            if check_if_accepts_arg(mod.load, "receive"):
+                try:
+                    return await mod.load(receive=receive)
+                except TypeError:
+                    return mod.load(receive=receive)
+            else:
+                try:
+                    return await mod.load()
+                except TypeError:
+                    return mod.load()
         else:
             return None
-        
+
     def render_template(self, template: str, data: dict[str, t.Any]) -> str | Exception:
         """
         Render the template
@@ -236,7 +274,7 @@ class Http:
             The template
         data: dict[str, typing.Any]
             The data to render the template
-        
+
         Returns
         -------
         str | Exception
@@ -247,8 +285,10 @@ class Http:
             return env.render(**data)
         except Exception as e:
             return e
-    
-    def serve_static(self, route: str) -> tuple[bytes, str] | tuple[bytes, t.Literal['text/plain']] | None:
+
+    def serve_static(
+        self, route: str
+    ) -> tuple[bytes, str] | tuple[bytes, t.Literal["text/plain"]] | None:
         """
         Serve the static files
 
@@ -264,14 +304,15 @@ class Http:
         """
         try:
             with open(self.static[route.replace("/static", "")], "rb") as file:
-                mime_type, _ = mimetypes.guess_type(self.static[route.replace("/static", "")])
-                print(mime_type)
+                mime_type, _ = mimetypes.guess_type(
+                    self.static[route.replace("/static", "")]
+                )
                 if mime_type:
                     return file.read(), mime_type
                 return file.read(), "text/plain"
         except (FileNotFoundError, KeyError):
             return None
-        
+
     async def render_not_found(self, send: Callable) -> None:
         """
         Render the 404 page
@@ -280,13 +321,23 @@ class Http:
         ---------
         send: collections.abc.Callable
             The send function
-        
+
         Returns
         -------
         None
         """
-        body = self.return_template(self.pages["/404"])
-        await send_response(404, body if body else "404 Not Found", [[b'content-type', b'text/html']], send)
+        try:
+            body = self.return_template(self.pages["/404"])
+            await send_response(
+                404,
+                body if body else "404 Not Found",
+                [[b"content-type", b"text/html"]],
+                send,
+            )
+        except KeyError:
+            await send_response(
+                404, "404 Not Found", [[b"content-type", b"text/html"]], send
+            )
 
     async def render_error(self, send: Callable) -> None:
         """
@@ -301,16 +352,26 @@ class Http:
         -------
         None
         """
-        body = "500 Internal Server Error"
         try:
             body = self.return_template(self.pages["/500"])
+            await send_response(
+                500,
+                body if body else "500 Internal Server Error",
+                [[b"content-type", b"text/html"]],
+                send,
+            )
         except KeyError:
-            await send_response(500, body, [[b'content-type', b'text/html']], send)
+            await send_response(
+                500,
+                "500 Internal Server Error",
+                [[b"content-type", b"text/html"]],
+                send,
+            )
 
     async def serve_script(self, route: str) -> str | None:
         """
         Serve the scripts
-        
+
         Arguments
         ---------
         route: str
@@ -326,7 +387,7 @@ class Http:
                 return file.read()
         except (FileNotFoundError, KeyError):
             return None
-        
+
     async def serve_styles(self, route: str) -> str | None:
         """
         Serve the styles

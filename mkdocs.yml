@@ -1,0 +1,68 @@
+site_name: vivid documentation
+site_description: docs of a toy web framework made by me for learning purpose.
+repo_url: https://github.com/NaviTheCoderboi/vivid
+site_author: NaviTheCoderboi
+copyright: Copyright NaviTheCoderboi ( 2024 - present )
+site_url: https://NaviTheCoderboi.github.io/vivid
+
+extra:
+  social:
+    - icon: material/github
+      url: https://github.com/NaviTheCoderboi/vivid
+  version: 1.0.0-alpha1
+
+theme:
+  name: "material"
+  logo: assets/vivid-logo.png
+  favicon: assets/vivid-logo.png
+
+  features:
+    - navigation.tracking
+    - navigation.instant
+    - navigation.tabs
+    - content.code.annotate
+    - navigation.instant
+    - toc.follow
+    - content.code.copy
+    - navigation.path
+
+  palette:
+    - scheme: light
+      toggle:
+        icon: material/weather-sunny
+        name: Light Mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-night
+        name: Dark Mode
+
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: numpy
+            merge_init_into_class: false
+            inherited_members: true
+          import:
+            - https://docs.python.org/3.11/objects.inv
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.superfences
+
+nav:
+  - Api Reference:
+      - Http: api_reference/http.md
+      - Router: api_reference/router.md
+  - Guides:
+      - Basic: guides/basic.md

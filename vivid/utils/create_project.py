@@ -1,7 +1,16 @@
 from pathlib import Path
-from vivid.utils.project_codes import index_html, index_css, index_js, index_py,not_found, app_py, get_ico
+from vivid.utils.project_codes import (
+    index_html,
+    index_css,
+    index_js,
+    index_py,
+    not_found,
+    app_py,
+    get_ico,
+)
 
 __all__: tuple[str, ...] = ("create_project",)
+
 
 def setup_pages(pages: Path):
     (pages / "index.html").touch()
@@ -11,29 +20,35 @@ def setup_pages(pages: Path):
     with open(pages / "404.html", "w") as f:
         f.write(not_found)
 
+
 def setup_server(server: Path):
     (server / "index.py").touch()
     with open(server / "index.py", "w") as f:
         f.write(index_py)
 
+
 def setup_static(static: Path):
     (static / "favicon.ico").touch()
     get_ico(static / "favicon.ico")
+
 
 def setup_styles(styles: Path):
     (styles / "index.css").touch()
     with open(styles / "index.css", "w") as f:
         f.write(index_css)
 
+
 def setup_scripts(scripts: Path):
     (scripts / "index.js").touch()
     with open(scripts / "index.js", "w") as f:
         f.write(index_js)
 
+
 def setup_app(path: Path):
     (path / "app.py").touch()
     with open(path / "app.py", "w") as f:
         f.write(app_py)
+
 
 def create_project(path: Path):
     if path.exists() and path.is_dir():

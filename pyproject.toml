@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vivid"
-version = "0.1.0"
+version = "1.0.0-alpha1"
 description = "A toy webframework made by me for learning purpose."
 authors = ["NaviTheCoderboi <102732282+NaviTheCoderboi@users.noreply.github.com>"]
 license = "MIT"
@@ -17,12 +17,23 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.11"
 jinja2 = "^3.1.3"
 uvicorn = {extras = ["standard"], version = "^0.27.0"}
 click = "^8.1.7"
 
 
+[tool.poetry.group.dev.dependencies]
+black = "^24.1.1"
+ruff = "^0.1.15"
+mkdocs = "^1.5.3"
+mkdocstrings = {extras = ["python"], version = "^0.24.0"}
+mkdocs-material = "^9.5.6"
+pygments = "^2.17.2"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 80
