@@ -33,7 +33,8 @@ To create a **Vivid** project you need to open a command line and type below com
 python -m vivid new project -p .
 ```
 
-> [!NOTE] > **-p** is shorthand for **--path**
+> [!NOTE]
+> **-p** is shorthand for **--path**
 
 ## walkthrough
 
