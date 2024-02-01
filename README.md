@@ -1,30 +1,44 @@
 # Vivid
 
-<p align="center">A toy webframework made by me for learning purpose.</p>
-![](https://img.shields.io/pypi/v/vivid?style=flat-square)
+<p align="center">
+    <img width="120" src="./assets/vivid-logo.png" alt="Library Logo">
+</p>
+
+<p align="center">
+    <strong>Vivid</strong> &rightarrow; A toy web framework made by me for learning purpose.<br><br>
+    <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg">
+</p>
+
+
 
 ## Installation
 
-install the vivid library from pypi using pip
+To install **Vivid** library, open a command line then write things those are below 
 
 ```sh
 python -m pip install vivid
 ```
 
-## Create project
+If the top command isn't working, try this one
 
-create a vivid project using vivid cli
-run the following command
+```sh
+python3 -m pip install vivid
+```
+
+## Start quickly by creating project
+
+To create a **Vivid** project you need to open a command line and type below command
 
 ```
 python -m vivid new project -p .
 ```
 
-**-p** is shorthand for **--path**
+> [!NOTE]
+> **-p** is shorthand for **--path**
 
 ## walkthrough
 
-you can load data on server using this server, make a **.py** file named same as template file in _/server_ directory.
+You can load data on server using this server, make a **.py** file named same as template file in _/server_ directory.
 you need to export a load function which returns a response, below is given an example **load** function
 
 for example **index.py**
@@ -36,7 +50,10 @@ async def load():
     return Response(200,[], { "name": "John" })
 ```
 
-You need to use jinja3.x syntax for templating, visit [jinja docs](https://jinja.palletsprojects.com/en/3.0.x/templates/) for learning more
+> [!NOTE]
+> You have to use jinja3.x syntax for templating, Here's [jinja docs](https://jinja.palletsprojects.com/en/3.0.x/templates/) for more information.
+
+### Example template
 
 Here is an example template **index.html**
 
