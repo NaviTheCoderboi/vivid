@@ -9,6 +9,7 @@
     <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg">
 	<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/NaviTheCoderboi/vivid.svg">
 	<img alt="GitHub stars" src="https://img.shields.io/github/stars/NaviTheCoderboi/vivid.svg">
+	<img alt="Message" src="https://img.shields.io/badge/Made%20with%20Love-7F47DD">
 </p>
 
 ## Installation
