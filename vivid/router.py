@@ -1,8 +1,14 @@
+"""
+### vivid.router
+
+A toy webframework made by me for learning purpose
+"""
 from dataclasses import dataclass
 from pathlib import Path
 import asyncio
 from vivid.http import Http
 import typing as t
+from vivid import logger
 
 __all__: tuple[str, ...] = ("App", "Response")
 
@@ -64,6 +70,7 @@ class App:
         -------
         None
         """
+        logger.info("Initializing the application...")
         pages = {}
         for page in self.pages.rglob("*.html"):
             if "index.html" in str(page.name):

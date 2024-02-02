@@ -1,3 +1,8 @@
+"""
+### vivid.http
+
+A toy webframework made by me for learning purpose
+"""
 from collections.abc import Callable
 from pathlib import Path
 import typing as t
@@ -7,6 +12,7 @@ import jinja2
 from vivid.utils.common import send_response, check_if_accepts_arg
 import mimetypes
 from types import ModuleType
+from vivid import logger
 
 __all__: tuple[str, ...] = ("Http",)
 
@@ -25,6 +31,7 @@ def load_mod(path: Path) -> ModuleType | None:
     ModuleType | None
         The loaded module or None
     """
+    logger.info(f"Loading {path.__str__()} (module)...")
     spec = util.spec_from_file_location(path.name, path)
     if spec and spec.loader:
         mod = util.module_from_spec(spec)
@@ -228,6 +235,7 @@ class Http:
         ModuleType | None
             The loaded module or None
         """
+        logger.info("Loading server...")
         mod = load_mod(page)
         if mod:
             return mod

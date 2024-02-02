@@ -1,6 +1,11 @@
+"""
+## Vivid.main
+
+A toy webframework made by me for learning purpose
+"""
 import click
 from pathlib import Path
-from vivid import __version__
+from vivid import __version__, logger
 from vivid.utils.create_project import create_project
 
 __all__: tuple[str, ...] = ()
@@ -29,9 +34,12 @@ def project(path: str | Path):
     try:
         if isinstance(path, str):
             path = Path(path).resolve()
+
+        logger.info("Creating project template...")
         create_project(path)
+        logger.info("Project template created!")
     except Exception as e:
-        print("Error: {}".format(e))
+        logger.error(e)
 
 
 @main.command()
@@ -39,9 +47,10 @@ def run():
     try:
         from vivid.app.app import app
 
+        logger.info("Starting application...")
         app.run()
     except Exception as e:
-        print("Error: {}".format(e))
+        logger.error(e)
 
 
 if __name__ == "__main__":
