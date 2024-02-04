@@ -16,13 +16,13 @@
 To install **Vivid** library, open a command line then write things those are below
 
 ```sh
-python -m pip install vivid
+python -m pip install git+https://github.com/NaviTheCoderboi/vivid.git
 ```
 
 If the top command isn't working, try this one
 
 ```sh
-python3 -m pip install vivid
+python3 -m pip install git+https://github.com/NaviTheCoderboi/vivid.git
 ```
 
 ## Start quickly by creating project
