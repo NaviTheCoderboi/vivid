@@ -16,13 +16,13 @@
 To install **Vivid** library, open a command line then write things those are below
 
 ```sh
-python -m pip install vivid
+python -m pip install git+https://github.com/NaviTheCoderboi/vivid.git
 ```
 
 If the top command isn't working, try this one
 
 ```sh
-python3 -m pip install vivid
+python3 -m pip install git+https://github.com/NaviTheCoderboi/vivid.git
 ```
 
 ## Start quickly by creating project
@@ -30,11 +30,11 @@ python3 -m pip install vivid
 To create a **Vivid** project you need to open a command line and type below command
 
 ```
-python -m vivid new project -p .
+python -m vivid init ...
 ```
 
 !!! note "Note"
-    **-p** is shorthand for **--path**
+	Don't forget to replace **...** with your project name
 
 ## walkthrough
 
@@ -44,7 +44,7 @@ you need to export a load function which returns a response, below is given an e
 for example **index.py**
 
 ```python
-from vivid.router import Response
+from vivid.app import Response
 
 async def load():
     return Response(200,[], { "name": "John" })

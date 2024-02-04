@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vivid"
-version = "1.0.0-alpha1"
+version = "1.0.0-alpha2"
 description = "A toy webframework made by me for learning purpose."
 authors = ["NaviTheCoderboi <102732282+NaviTheCoderboi@users.noreply.github.com>"]
 license = "MIT"
@@ -9,7 +9,7 @@ repository = "https://github.com/NaviTheCoderboi/vivid"
 documentation = "https://github.com/NaviTheCoderboi/vivid"
 homepage = "https://github.com/NaviTheCoderboi/vivid"
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 3 - Alpha"
 ]
 
 packages = [
@@ -17,10 +17,11 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 jinja2 = "^3.1.3"
 uvicorn = {extras = ["standard"], version = "^0.27.0"}
-click = "^8.1.7"
+rich = "^13.7.0"
+rich-click = "^1.7.3"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -30,10 +31,31 @@ mkdocs = "^1.5.3"
 mkdocstrings = {extras = ["python"], version = "^0.24.0"}
 mkdocs-material = "^9.5.6"
 pygments = "^2.17.2"
+isort = "^5.13.2"
+pre-commit = "^3.6.0"
+mypy = "^1.8.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
-line-length = 80
+line-length = 120
+target-version = "py310"
+
+[tool.black]
+line-length = 120
+target-version = ['py310']
+
+[tool.isort]
+line_length = 120
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+src_paths = ["vivid"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true

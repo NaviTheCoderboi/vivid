@@ -9,7 +9,7 @@ extra:
   social:
     - icon: material/github
       url: https://github.com/NaviTheCoderboi/vivid
-  version: 1.0.0-alpha1
+  version: 1.0.0-alpha2
 
 theme:
   name: "material"
@@ -63,6 +63,6 @@ markdown_extensions:
 nav:
   - Api Reference:
       - Http: api_reference/http.md
-      - Router: api_reference/router.md
+      - App: api_reference/app.md
   - Guides:
       - Basic: guides/basic.md

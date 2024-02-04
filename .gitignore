@@ -1,5 +1,3 @@
-
-
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -18,6 +16,7 @@ testing/*
 build/
 develop-eggs/
 dist/
+!vivid/router/dist
 downloads/
 eggs/
 .eggs/
