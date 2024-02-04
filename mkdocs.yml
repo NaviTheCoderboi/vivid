@@ -61,8 +61,11 @@ markdown_extensions:
   - pymdownx.superfences
 
 nav:
+  - Home: index.md
   - Api Reference:
-      - Http: api_reference/http.md
       - App: api_reference/app.md
+      - Http:
+          - SSR: api_reference/http/SSR.md
+          - SSG: api_reference/http/SSG.md
   - Guides:
       - Basic: guides/basic.md
