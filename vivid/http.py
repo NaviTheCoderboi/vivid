@@ -476,5 +476,5 @@ class SSG:
             console.print_exception()
         finally:
             console.print("[#0EA5E9 bold]✅ Copied styles[/#0EA5E9 bold]")
-        print("[#8B5CF6 bold]\n✅ Build complete\n[/#8B5CF6 bold]")
-        print("[#FACC15 bold]⚠ Make sure to fix the srcs and hrefs of scripts and stlyes[/#FACC15 bold]")
+        console.print("[#8B5CF6 bold]\n✅ Build complete\n[/#8B5CF6 bold]")
+        console.print("[#FACC15 bold]⚠ Make sure to fix the srcs and hrefs of scripts and stlyes[/#FACC15 bold]")
