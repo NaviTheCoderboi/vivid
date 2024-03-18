@@ -25,7 +25,7 @@ rich-click = "^1.7.3"
 
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.1.1"
+black = "^24.3.0"
 ruff = "^0.1.15"
 mkdocs = "^1.5.3"
 mkdocstrings = {extras = ["python"], version = "^0.24.0"}
